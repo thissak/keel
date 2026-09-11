@@ -1,0 +1,43 @@
+{
+  "name": "keel-theia-comparison",
+  "private": true,
+  "version": "0.0.0",
+  "scripts": {
+    "build:extension": "node ../sync-fixture.mjs && tsc -p note-extension",
+    "build": "npm run build:extension && npm run rebuild && theia build --mode production && node prepare-mac.cjs",
+    "start": "electron launch.cjs --hostname 127.0.0.1 --port 0",
+    "rebuild": "theia rebuild:electron"
+  },
+  "dependencies": {
+    "@theia/core": "1.75.0",
+    "@theia/editor": "1.75.0",
+    "@theia/electron": "1.75.0",
+    "@theia/filesystem": "1.75.0",
+    "@theia/markers": "1.75.0",
+    "@theia/messages": "1.75.0",
+    "@theia/monaco": "1.75.0",
+    "@theia/navigator": "1.75.0",
+    "@theia/preferences": "1.75.0",
+    "@theia/process": "1.75.0",
+    "@theia/terminal": "1.75.0",
+    "@theia/workspace": "1.75.0",
+    "@types/react": "^19.0.0",
+    "@types/react-dom": "^19.0.0",
+    "keel-note-extension": "file:./note-extension",
+    "react": "19.3.0",
+    "react-dom": "19.3.0"
+  },
+  "devDependencies": {
+    "@theia/cli": "1.75.0",
+    "electron": "42.8.1",
+    "typescript": "5.9.3"
+  },
+  "theia": {
+    "target": "electron",
+    "frontend": {
+      "config": {
+        "applicationName": "Keel · Theia comparison"
+      }
+    }
+  }
+}

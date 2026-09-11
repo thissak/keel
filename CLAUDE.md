@@ -24,3 +24,9 @@
 - GOLEM은 프로젝트 식별자와 위치를 관리한다. 상태를 카탈로그에 복제하지 않는다.
 - GoldenNote 연결은 기본 활성화한다. 게시 범위는 공개 README·설계·사용법·변경 이력에 한정한다.
 - 소비 앱의 비공개 코드·데이터·운영 정보는 GoldenNote 게시 대상에서 제외한다.
+
+## 검증 명령
+
+`experiments/app-base-comparison/`에서 의존성 설치 후 `npm --prefix orca run build`,
+`npm --prefix theia run build`, `npm test`를 실행한다. 비교 예제용 명령이며 제품 배포 명령이 아니다.
+설치와 macOS 개발용 서명 보정은 해당 디렉터리의 `README.md`를 따른다.

@@ -1,0 +1,36 @@
+{
+  "measuredAt": "2026-09-11T23:06:02.357Z",
+  "note": "Single local run; readyMs is a smoke observation, not a benchmark. Synthetic notes; no production authentication or content.",
+  "results": [
+    {
+      "candidate": "orca",
+      "electron": "42.8.1",
+      "readyMs": 343,
+      "checks": [
+        "launch",
+        "filter note list",
+        "open note from plus menu",
+        "open second note",
+        "no duplicate tab",
+        "save layout",
+        "restart restores two tabs",
+        "switch restored tab"
+      ],
+      "result": "passed"
+    },
+    {
+      "candidate": "theia",
+      "electron": "42.8.1",
+      "readyMs": 2050,
+      "checks": [
+        "launch",
+        "open second note",
+        "no duplicate tab",
+        "save layout",
+        "restart restores two tabs",
+        "switch restored tab"
+      ],
+      "result": "passed"
+    }
+  ]
+}

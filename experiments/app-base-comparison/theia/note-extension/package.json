@@ -1,0 +1,14 @@
+{
+  "name": "keel-note-extension",
+  "version": "0.0.0",
+  "private": true,
+  "main": "lib/frontend-module.js",
+  "dependencies": {
+    "@theia/core": "1.75.0"
+  },
+  "theiaExtensions": [
+    {
+      "frontend": "lib/frontend-module"
+    }
+  ]
+}
