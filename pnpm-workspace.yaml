@@ -1,0 +1,7 @@
+packages:
+  - examples/*
+minimumReleaseAgeExclude:
+  - tailwind-merge@3.7.0
+onlyBuiltDependencies:
+  - electron
+  - esbuild

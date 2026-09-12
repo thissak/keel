@@ -1,0 +1,49 @@
+{
+  "name": "@goldenlabs/keel",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Keel — Orca 모양의 공통 데스크톱 앱베이스 (Electron + React)",
+  "license": "UNLICENSED",
+  "type": "module",
+  "exports": {
+    "./main": { "types": "./dist/main/index.d.ts", "default": "./dist/main/index.js" },
+    "./renderer": { "types": "./dist/renderer/index.d.ts", "default": "./dist/renderer/index.js" },
+    "./preload": "./dist/preload/index.cjs",
+    "./main.css": "./styles/main.css",
+    "./template/*": "./template/*"
+  },
+  "files": ["dist", "styles", "template"],
+  "scripts": {
+    "build": "rm -rf dist && tsc -p tsconfig.json",
+    "prepare": "npm run build",
+    "pretest": "npm run build",
+    "typecheck": "tsc -p tsconfig.json --noEmit",
+    "test": "vitest run",
+    "example:build": "pnpm --filter keel-sample-app build",
+    "example:test": "pnpm --filter keel-sample-app test"
+  },
+  "peerDependencies": {
+    "electron": ">=44.0.0",
+    "react": "^19.0.0",
+    "react-dom": "^19.0.0"
+  },
+  "dependencies": {
+    "class-variance-authority": "0.7.1",
+    "clsx": "2.1.1",
+    "lucide-react": "1.45.0",
+    "radix-ui": "1.6.7",
+    "tailwind-merge": "3.7.0",
+    "zustand": "5.0.15"
+  },
+  "devDependencies": {
+    "@types/node": "22.20.2",
+    "@types/react": "^19.0.0",
+    "@types/react-dom": "^19.0.0",
+    "electron": "44.3.0",
+    "jsdom": "^26.0.0",
+    "react": "19.3.0",
+    "react-dom": "19.3.0",
+    "typescript": "5.9.3",
+    "vitest": "5.0.0"
+  }
+}
