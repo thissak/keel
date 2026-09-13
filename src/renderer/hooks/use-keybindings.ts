@@ -14,11 +14,11 @@ export function useKeybindings(): void {
       if (key === 'b' && !e.shiftKey) { e.preventDefault(); ui.setSidebarOpen(!ui.sidebarOpen) }
       else if (key === 'l' && !e.shiftKey) { e.preventDefault(); ui.setRightPanelOpen(!ui.rightPanelOpen) }
       else if (key === 'w' && !e.shiftKey) { const t = activeTab(tabs.state); if (t) { e.preventDefault(); tabs.close(t.id) } }
-      else if (e.shiftKey && (e.key === ']' || e.key === '[')) {
+      else if (e.shiftKey && (e.code === 'BracketRight' || e.code === 'BracketLeft')) {
         const s = tabs.state; const g = s.activeGroupId ? s.groups[s.activeGroupId] : null
         if (!g || !g.activeTabId) return
         const i = g.tabOrder.indexOf(g.activeTabId)
-        const next = g.tabOrder[(i + (e.key === ']' ? 1 : g.tabOrder.length - 1)) % g.tabOrder.length]
+        const next = g.tabOrder[(i + (e.code === 'BracketRight' ? 1 : g.tabOrder.length - 1)) % g.tabOrder.length]
         e.preventDefault(); tabs.activate(next)
       }
     }

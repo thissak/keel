@@ -4,12 +4,12 @@ import { Button } from '../components/ui/button.js'
 import { useUiStore } from '../store/ui.js'
 import { isMac, hasCustomTitleBar } from './chrome.js'
 
-interface Props { appName: string; sidebarWidth: number; showSidebar: boolean; tabStrip: ReactNode; showRightToggle: boolean; onBack?(): void; onForward?(): void }
+interface Props { appName: string; showSidebar: boolean; tabStrip: ReactNode; showRightToggle: boolean; onBack?(): void; onForward?(): void }
 
 export function TitlebarLeft({ appName, showSidebar, onBack, onForward }: Pick<Props, 'appName' | 'showSidebar' | 'onBack' | 'onForward'>) {
   const { sidebarOpen, setSidebarOpen } = useUiStore()
   return (
-    <div className={sidebarOpen ? 'titlebar-left' : 'titlebar-left titlebar-left-floating'}>
+    <div className={sidebarOpen && showSidebar ? 'titlebar-left' : 'titlebar-left titlebar-left-floating'}>
       {isMac ? <div className="titlebar-traffic-light-pad" /> : <span className="px-3 text-xs font-medium text-muted-foreground">{appName}</span>}
       {showSidebar ? (
         <Button variant="ghost" size="icon" className="size-7" aria-label="사이드바 토글" onClick={() => setSidebarOpen(!sidebarOpen)}><PanelLeft size={15} /></Button>
