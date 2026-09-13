@@ -19,6 +19,7 @@ const close = app => {
 const guests = app => app.evaluate(({ webContents }) =>
   webContents.getAllWebContents().filter(w => w.getType() === 'webview').map(w => ({ id: w.id, url: w.getURL(), sandbox: w.getLastWebPreferences()?.sandbox, node: w.getLastWebPreferences()?.nodeIntegration })))
 const guestCount = app => guests(app).then(g => g.length)
+const windowCount = app => app.evaluate(({ BrowserWindow }) => BrowserWindow.getAllWindows().length)
 const runInGuest = (app, id, code) => app.evaluate(({ webContents }, [gid, js]) => webContents.fromId(gid).executeJavaScript(js), [id, code])
 // 재시작 전후 같은 원점이어야 저장된 웹 탭이 복원된다 → 빈 포트를 하나 잡아 샘플 서버에 고정한다
 const freePort = () => new Promise((resolve, reject) => {
@@ -57,6 +58,7 @@ async function runShellMode(data) {
     await runInGuest(app, gid, "document.getElementById('inside').click()")
     await expect(page.getByRole('tab', { name: /샘플 웹 \/second/ })).toBeVisible({ timeout: 20000 })
     await expect.poll(() => guestCount(app), { timeout: 10000 }).toBe(2)
+    expect(await windowCount(app)).toBe(1) // allowpopups가 실제 창을 열면 안 된다
     const stubbed = await app.evaluate(({ shell }) => {
       try { Object.defineProperty(shell, 'openExternal', { value: async () => {}, configurable: true }); return true } catch { return false }
     })
@@ -64,6 +66,7 @@ async function runShellMode(data) {
       await runInGuest(app, gid, "document.getElementById('outside').click()")
       await page.waitForTimeout(500)
       expect(await guestCount(app)).toBe(2)
+      expect(await windowCount(app)).toBe(1)
       await expect(page.getByRole('tab', { name: /example/i })).toHaveCount(0)
     } else {
       console.log('skip: cannot stub shell.openExternal')

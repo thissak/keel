@@ -1,4 +1,4 @@
-import { useEffect, useRef } from 'react'
+import { createElement, useEffect, useRef } from 'react'
 import type { Tab } from '../../shared/tab-model.js'
 import { useTabsStore } from '../store/tabs.js'
 import { isWebviewDetachNoise, titleFor } from './webview-events.js'
@@ -35,11 +35,12 @@ export function WebviewHost({ tab, active }: { tab: Tab; active: boolean }) {
     }
   }, [tab.id, update])
   // src는 최초 한 번만 준다. 이후 URL 변화는 게스트 안의 탐색이며 스토어에는 did-navigate로 반영된다.
-  // allowpopups가 없으면 Chromium이 target=_blank·window.open을 렌더러에서 막아 메인의 setWindowOpenHandler(새 탭·외부 라우팅)에 닿지 않는다.
-  // React는 알 수 없는 요소의 boolean 속성을 DOM에 쓰지 않으므로 빈 문자열로 준다 (Electron은 속성 존재만 본다).
+  // allowpopups가 없으면 Electron 메인이 게스트의 disablePopups로 window.open을 창 생성 전에 막아 setWindowOpenHandler에 닿지 않는다.
+  // React는 알 수 없는 요소의 boolean 속성을 DOM에 쓰지 않으므로 빈 문자열(속성 존재)로 준다. @types/react는 webview.allowpopups를
+  // boolean으로만 선언하고 인터페이스 병합으로는 넓힐 수 없어, 캐스트 대신 props 타입을 추론하는 createElement로 만든다.
   return (
     <div className="flex min-h-0 flex-1" style={{ display: active ? 'flex' : 'none' }}>
-      <webview ref={ref as never} data-tab-id={tab.id} partition={`persist:${window.keel.app.id}`} src={tab.url} allowpopups={'' as unknown as boolean} />
+      {createElement('webview', { ref, 'data-tab-id': tab.id, partition: `persist:${window.keel.app.id}`, src: tab.url, allowpopups: '' })}
     </div>
   )
 }
