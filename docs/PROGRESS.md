@@ -11,14 +11,14 @@ lifecycle: active
 - [x] 로컬 `main` 저장소와 공개 GitHub `thissak/keel` 생성·origin 연결
 - [x] GOLEM 카탈로그 등록 및 GoldenNote 연결 활성화
 - [x] 공통 프레임워크 범위·소비 앱별 버전 선택 원칙 기록
-- [ ] 프레임워크 기술 스택과 확장 계약 확정
+- [x] 프레임워크 기술 스택과 확장 계약 확정
 - [x] Orca를 기본 설정 기준으로 확정하고 설치 패키지의 기술 구성 확인
 - [ ] Orca 원본 개발 설정·버전 확인 및 최소 앱 확장 계약 확정
-- [ ] 라이선스와 패키지 배포 방식 확정
-- [ ] 공통 레이아웃과 탭 기반 구현·검증
+- [ ] 라이선스 확정 (배포 방식은 ADR 005)
+- [x] 공통 레이아웃과 탭 기반 구현·검증
 - [x] Theia와 Orca 기술 기반 조합의 샘플 노트 비교 — 빌드·Electron 실행·중복 탭 방지·재시작 복원
 - [x] Orca 기반 비교 앱의 탭 인접 `+` 메뉴와 아이콘형 제목·본문 노트 검색 구현·Electron 검증
-- [ ] 비교 결과를 바탕으로 제품용 공통 패키지와 앱 확장 계약 확정
+- [x] 비교 결과를 바탕으로 제품용 공통 패키지와 앱 확장 계약 확정
 - [x] 소비 앱 코드 위치를 소비 앱 저장소로 확정 — 골든노트 데스크톱 앱은 골든노트 저장소에 둔다
 - [x] 골든노트·GateLab·Deuce 세 앱 공통 적용 설계 감독 승인 — [설계 문서](design/2026-09-13-keel-shell-design.md), [ADR 004](adr/004-webview-tabs-and-orca-shell.md), [ADR 005](adr/005-root-package-git-tag-distribution.md)
 - [x] Keel 1단계 코어 구현 (Orca 셸·webview 탭·앱 패널·상태 저장·정책 계층·`fetchAsApp`·템플릿) 및 예제 스모크 — `feat/keel-core-v0.1` 브랜치, [구현 계획](superpowers/plans/2026-09-13-keel-core-v0.1.md), [handoff](handoff/keel-core-v0.1-handoff.md)
@@ -26,7 +26,7 @@ lifecycle: active
 - [ ] 골든노트 `desktop/` 연결 — Keel 세션과 골든노트 세션이 각자 저장소에서 진행
 - [ ] 골든노트·게이트랩 실제 소비 앱 연결 및 공통 버전 갱신 검증
 
-실행 가능한 비교 코드는 `experiments/app-base-comparison/`에 있다. 제품용 공통 코어와 배포 패키지는 아직 없다. 기본 기술 구성은 ADR 002에 따라 Orca를 따른다. 비교 실험은 Orca 기술 기반 조합을 우선 후보로 제안하며, 실제 골든노트·게이트랩 연결과 공통 패키지 버전 갱신은 후속 검증 대상이다.
+실행 가능한 비교 코드는 `experiments/app-base-comparison/`에 있다. 제품용 공통 코어는 feat/keel-core-v0.1 브랜치에 있으며 태그·배포는 감독 승인 후다. 기본 기술 구성은 ADR 002에 따라 Orca를 따른다. 비교 실험은 Orca 기술 기반 조합을 우선 후보로 제안하며, 실제 골든노트·게이트랩 연결과 공통 패키지 버전 갱신은 후속 검증 대상이다.
 
 ## 검증된 범위
 
@@ -35,7 +35,7 @@ lifecycle: active
 - Orca 기반 비교 앱은 간결한 아이콘 검색·검색어 지우기와 탭 옆 `+` 메뉴에서 노트를 여는 동작을 추가로 검증했다.
 - 근거: [자동 검증 결과](../experiments/app-base-comparison/evidence/smoke.json), [비교 보고서](research/2026-09-12-app-base-comparison.md).
 - 샘플 노트로 검증했으며 실제 골든노트·게이트랩, 버전 업그레이드 호환성, 배포용 서명·설치 파일·자동 업데이트, Windows/Linux는 미검증이다.
-- Dockview 조합은 우선 후보 제안이다. 제품 의존성 선택과 API 계약을 확정한 상태는 아니다.
+- Dockview는 실험에만 쓰였고 제품은 ADR 004에 따라 Orca식 커스텀 탭을 쓴다.
 - Keel v0.1 코어: macOS arm64·Electron 44.3.0에서 설계 §12 스모크 5개(로컬 웹 탭+신뢰 원점 밖 링크
   외부 브라우저 전환, 앱 패널+웹 탭 분할 후 재시작 복원, `will-attach-webview` 허용 목록 밖 차단,
   권한 목록 밖 요청 거부, 사이드바 생략+`tabStrip:'never'` 웹 한 장 모드)와 `fetchAsApp`의 타 원점
