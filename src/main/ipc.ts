@@ -9,7 +9,8 @@ import type { UiStateStore } from './ui-state-store.js'
 function fetchAsApp(webSession: Session, request: FetchAsAppRequest): Promise<FetchAsAppResponse> {
   const requestOrigin = new URL(request.url).origin
   return new Promise((resolve, reject) => {
-    const req = net.request({ url: request.url, method: request.init?.method ?? 'GET', session: webSession, redirect: 'manual' })
+    // session만 넘기면 쿠키가 실리지 않는다 — Access·서버 세션 쿠키로 보호 API를 읽으려면 필수
+    const req = net.request({ url: request.url, method: request.init?.method ?? 'GET', session: webSession, redirect: 'manual', useSessionCookies: true })
     for (const [k, v] of Object.entries(request.init?.headers ?? {})) req.setHeader(k, v)
     let currentUrl = request.url
     req.on('redirect', (statusCode, _method, redirectUrl) => {

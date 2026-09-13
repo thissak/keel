@@ -94,6 +94,13 @@ async function runShellMode(data) {
     await noteList.getByRole('button', { name: '보호 fetch' }).click()
     await expect(page.locator('#fetch-result')).toContainText('loginRequired:true', { timeout: 10000 })
     await expect(page.locator('#fetch-result')).toContainText('status:302')
+
+    // 6-1. 쿠키 발급 후에는 fetchAsApp이 세션 쿠키를 실어 보내 보호 fetch가 통과한다
+    await noteList.getByRole('button', { name: '쿠키 발급' }).click()
+    await expect(page.getByRole('tab', { name: /쿠키 발급/ })).toBeVisible({ timeout: 20000 })
+    await noteList.getByRole('button', { name: '보호 fetch' }).click()
+    await expect(page.locator('#fetch-result')).toContainText('loginRequired:false status:200', { timeout: 10000 })
+
     await noteList.getByRole('button', { name: '이동 fetch' }).click()
     await expect(page.locator('#fetch-result')).toContainText('loginRequired:false', { timeout: 10000 })
     await expect(page.locator('#fetch-result')).toContainText('status:200')
@@ -114,8 +121,9 @@ async function runShellMode(data) {
     await expect(restored.getByRole('tab', { name: '공통 개선 적용' })).toHaveCount(1)
     await expect(restored.getByRole('tab', { name: /샘플 웹 \/second/ })).toHaveCount(1, { timeout: 20000 })
     await expect(restored.getByRole('tab', { name: /샘플 웹 \// })).toHaveCount(2, { timeout: 20000 })
+    await expect(restored.getByRole('tab', { name: /쿠키 발급/ })).toHaveCount(1, { timeout: 20000 })
     await expect(restored.locator('[data-split-handle]')).toHaveCount(1)
-    await expect.poll(() => guests(app).then(g => g.map(x => x.url).sort()), { timeout: 20000 }).toEqual([`${origin}/`, `${origin}/second`])
+    await expect.poll(() => guests(app).then(g => g.map(x => x.url).sort()), { timeout: 20000 }).toEqual([`${origin}/`, `${origin}/login-cookie`, `${origin}/second`])
     expect(restoredErrors).toEqual([])
     console.log('sample-app smoke (shell): passed')
   } finally {

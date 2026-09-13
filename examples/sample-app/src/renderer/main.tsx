@@ -30,6 +30,7 @@ function Sidebar() {
     <nav aria-label="노트 목록" className="flex flex-col gap-1 p-2 text-sm">
       {notes.map(n => <button key={n.id} className={item} onClick={() => keel.openPanel({ kind: 'note', id: n.id, title: n.title, params: n })}>{n.title}</button>)}
       <button className={item} onClick={() => keel.openWeb({ url: `${origin}/`, title: '샘플 웹' })}>샘플 웹</button>
+      <button className={item} onClick={() => keel.openWeb({ url: `${origin}/login-cookie`, title: '쿠키 발급' })}>쿠키 발급</button>
       <button className={item} onClick={() => keel.split('horizontal')}>분할</button>
       <button className={item} onClick={() => void fetchAsApp('/protected')}>보호 fetch</button>
       <button className={item} onClick={() => void fetchAsApp('/moved')}>이동 fetch</button>

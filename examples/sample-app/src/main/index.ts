@@ -6,8 +6,19 @@ import { createKeelApp } from '@goldenlabs/keel/main'
 
 // 원격 웹 탭 검증용 로컬 페이지. 신뢰 원점 안 링크(/second)와 밖 링크(https://example.com)를 둔다.
 // /protected는 Access 같은 인증 프록시의 타 원점 302, /moved는 같은 원점 안 상대 301을 흉내 낸다 (fetchAsApp 검증).
+// /login-cookie는 세션 쿠키 발급을 흉내 낸다 — fetchAsApp이 이 쿠키를 실어 보내야 /protected가 통과한다.
 const server = createServer((req, res) => {
+  if (req.url === '/login-cookie') {
+    res.writeHead(200, { 'content-type': 'text/html; charset=utf-8', 'set-cookie': 'keel_sample=1; Path=/' })
+    res.end(`<!doctype html><title>쿠키 발급</title><h1>쿠키 발급</h1>`)
+    return
+  }
   if (req.url === '/protected') {
+    if ((req.headers.cookie ?? '').includes('keel_sample=1')) {
+      res.writeHead(200, { 'content-type': 'text/html; charset=utf-8' })
+      res.end(`<!doctype html><title>보호됨</title><h1>보호됨</h1>`)
+      return
+    }
     res.writeHead(302, { location: 'https://login.example.com/' })
     res.end()
     return
