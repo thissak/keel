@@ -5,10 +5,19 @@
 
 ## 복사 절차
 
+루트에서 `npm install`로 Keel을 받지 않는다 — 루트 `package.json`에 `@goldenlabs/keel`이 들어가면 npm ≥7이
+`electron` peer까지 루트에 설치해 Vercel·CI가 Electron을 내려받는다. 템플릿 디렉터리만 가져온다.
+
 ```sh
-# 소비 앱 저장소 루트에서
-npm install github:thissak/keel#v0.1.0        # 또는 원하는 Keel 태그
-cp -r node_modules/@goldenlabs/keel/template desktop
+# 소비 앱 저장소 루트에서 — 템플릿 서브디렉터리만 desktop/으로 내려받는다
+npx giget@latest gh:thissak/keel/template#v0.1.0 desktop   # 또는 원하는 Keel 태그
+cd desktop && npm install                                   # Keel은 desktop/package.json의 github: 의존성으로 설치된다
+```
+
+giget 없이:
+
+```sh
+git clone --depth 1 -b v0.1.0 https://github.com/thissak/keel /tmp/keel && cp -r /tmp/keel/template desktop
 cd desktop && npm install
 ```
 
@@ -44,9 +53,9 @@ cd desktop && npm install
 - **`createKeelApp()`을 최상위 `await`로 기다리지 말 것.** Electron은 ESM 메인의 최상위 await가 끝나야
   `ready`를 내고, `createKeelApp`은 `ready`를 기다리므로 교착된다(창이 뜨지 않음). 템플릿처럼 `.catch()`로 끝내고,
   `KeelApp` 핸들이 필요하면 `.then(keel => …)`으로 받는다. 다른 준비(로컬 서버 listen 등)의 최상위 await는 괜찮다.
-- **`desktop/`는 루트 workspace에 넣지 말 것.** 루트 `package.json`의 workspaces에 포함되면
-  Vercel·CI가 의존성 설치 시 Electron 바이너리를 내려받는다. `desktop/`는 독립 패키지로 두고
-  그 안에서만 `npm install`한다.
+- **`desktop/`는 루트 workspace에 넣지 말 것.** 루트 `package.json`의 workspaces에 포함되거나 루트에
+  `@goldenlabs/keel`·`electron`이 의존성으로 들어가면 Vercel·CI가 의존성 설치 시 Electron 바이너리를 내려받는다.
+  `desktop/`는 독립 패키지로 두고 그 안에서만 `npm install`한다(위 복사 절차가 이를 지킨다).
 - `src/renderer/main.css`의 `@source '../../node_modules/@goldenlabs/keel/dist'`는 Keel 셸의
   Tailwind 클래스를 생성하기 위한 것이다. 지우면 셸 스타일이 빠진다.
 - `electron.vite.config.ts`의 `externalizeDepsPlugin()`은 `@goldenlabs/keel/main`을 번들에 넣지 않고

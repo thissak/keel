@@ -5,6 +5,7 @@
   "description": "Keel — Orca 모양의 공통 데스크톱 앱베이스 (Electron + React)",
   "license": "UNLICENSED",
   "type": "module",
+  "packageManager": "pnpm@11.24.0",
   "exports": {
     "./main": {
       "types": "./dist/main/index.d.ts",
