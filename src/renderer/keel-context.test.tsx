@@ -40,4 +40,31 @@ describe('KeelShell + useKeel', () => {
     expect(setSpy).not.toHaveBeenCalled()
     expect(onReady).not.toHaveBeenCalled()
   })
+
+  it('splitting a single-tab group keeps the tab in place and routes new tabs to the new group', async () => {
+    ;(window as any).keel = { app: { id: 't', name: 'T', platform: 'darwin' }, ui: { get: async () => ({ ...(await import('../shared/ui-state.js')).DEFAULT_UI_STATE }), set: async () => {} }, window: { onMaximizedChange: () => () => {} }, guest: { onOpenRequest: () => () => {} }, fetchAsApp: async () => ({ status: 200, loginRequired: false, headers: {}, text: '' }) }
+    // jsdom엔 matchMedia가 없다 — KeelShellLayout의 시스템 테마 감지용으로 테스트에서만 스텁한다
+    window.matchMedia = window.matchMedia ?? ((query: string) => ({ matches: false, media: query, addEventListener: () => {}, removeEventListener: () => {}, addListener: () => {}, removeListener: () => {}, dispatchEvent: () => false, onchange: null }) as unknown as MediaQueryList)
+    let keel: ReturnType<typeof useKeel> | null = null
+    function Probe() { const api = useKeel(); useEffect(() => { keel = api }, [api]); return null }
+    let unmount: () => void = () => {}
+    await act(async () => { ({ unmount } = render(<KeelShell sidebar={<Probe />} />)) })
+    await waitFor(() => expect(keel).not.toBeNull())
+
+    act(() => { keel!.openWeb({ url: 'https://split.dev/one' }) })
+    const rootId = useTabsStore.getState().state.activeGroupId!
+
+    act(() => { keel!.split('horizontal') })
+    const afterSplit = useTabsStore.getState().state
+    expect(afterSplit.groups[rootId].tabOrder).toEqual(['web:https://split.dev/one'])
+    expect(afterSplit.layout?.type).toBe('split')
+    const newGroupId = afterSplit.activeGroupId!
+    expect(newGroupId).not.toBe(rootId)
+    expect(afterSplit.groups[newGroupId].tabOrder).toEqual([])
+
+    act(() => { keel!.openWeb({ url: 'https://split.dev/two' }) })
+    expect(useTabsStore.getState().state.groups[newGroupId].tabOrder).toEqual(['web:https://split.dev/two'])
+
+    act(() => { unmount() })
+  })
 })

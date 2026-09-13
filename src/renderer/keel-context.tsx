@@ -22,7 +22,13 @@ export function createKeelApi(): KeelApi {
     openWeb: ({ url, title, id }) => tabs().open({ id: id ?? `web:${url}`, kind: 'web', title: title ?? url, url }),
     openPanel: ({ kind, id, title, params }) => tabs().open({ id, kind: 'panel', title, panel: { kind, params } }),
     close: id => tabs().close(id),
-    split: direction => { const s = tabs().state; const t = activeTab(s); if (s.activeGroupId) tabs().split(s.activeGroupId, direction, t?.id) },
+    split: direction => {
+      const s = tabs().state
+      if (!s.activeGroupId) return
+      const group = s.groups[s.activeGroupId]
+      const t = activeTab(s)
+      tabs().split(s.activeGroupId, direction, group.tabOrder.length > 1 ? t?.id : undefined)
+    },
     fetchAsApp: (url, init) => window.keel.fetchAsApp({ url, init })
   }
 }
