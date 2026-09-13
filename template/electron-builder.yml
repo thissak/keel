@@ -1,0 +1,7 @@
+# 소비 앱이 appId·productName·icon을 바꾼다. 서명·공증은 2단계.
+appId: dev.goldenlabs.keel-app
+productName: Keel App
+directories: { output: release }
+files: [out/**, package.json]
+mac: { category: public.app-category.productivity, target: [dmg, zip] }
+win: { target: [nsis] }
