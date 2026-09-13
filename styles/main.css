@@ -1,0 +1,177 @@
+/* styles/main.css
+   Adapted from stablyai/orca (MIT) src/renderer/src/assets/main.css @ cf7ce058:
+   토큰·타이틀바·창 컨트롤만 가져오고 터미널·git·에이전트 전용 토큰은 뺐다. */
+@import 'tailwindcss';
+@import 'tw-animate-css';
+
+@font-face {
+  font-family: 'Geist';
+  src: url('./fonts/Geist-Variable.woff2') format('woff2');
+  font-weight: 100 900;
+  font-style: normal;
+  font-display: swap;
+}
+
+@custom-variant dark (&:is(.dark *));
+@custom-variant can-hover (@media (hover: hover));
+
+@theme inline {
+  --font-sans: var(--app-font-family);
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-destructive-foreground: var(--destructive-foreground);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+  --color-sidebar: var(--sidebar);
+  --color-sidebar-foreground: var(--sidebar-foreground);
+  --color-sidebar-primary: var(--sidebar-primary);
+  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
+  --color-sidebar-accent: var(--sidebar-accent);
+  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
+  --color-sidebar-border: var(--sidebar-border);
+  --color-sidebar-ring: var(--sidebar-ring);
+  --color-left-sidebar: var(--left-sidebar);
+  --color-left-sidebar-foreground: var(--left-sidebar-foreground);
+  --color-left-sidebar-accent: var(--left-sidebar-accent);
+  --color-left-sidebar-accent-foreground: var(--left-sidebar-accent-foreground);
+  --color-left-sidebar-border: var(--left-sidebar-border);
+  --color-split-divider: var(--split-divider);
+  --color-split-divider-strong: var(--split-divider-strong);
+  --shadow-floating: 0 10px 24px rgb(0 0 0 / 0.18);
+  --radius-sm: calc(var(--radius) * 0.6);
+  --radius-md: calc(var(--radius) * 0.8);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) * 1.4);
+  --radius-2xl: calc(var(--radius) * 1.8);
+}
+
+:root {
+  --app-font-family: 'Geist', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  --font-mono: 'SF Mono', SFMono-Regular, ui-monospace, 'Cascadia Code', Menlo, Consolas, 'Liberation Mono', monospace;
+  --radius: 0.625rem;
+  --background: #fff;
+  --foreground: #0a0a0a;
+  --card: #fff;
+  --card-foreground: #0a0a0a;
+  --popover: #fff;
+  --popover-foreground: #0a0a0a;
+  --primary: #171717;
+  --primary-foreground: #fafafa;
+  --secondary: #f5f5f5;
+  --secondary-foreground: #171717;
+  --muted: #f5f5f5;
+  --muted-foreground: #737373;
+  --accent: #f5f5f5;
+  --accent-foreground: #171717;
+  --destructive: #e40014;
+  --destructive-foreground: #fcf3f3;
+  --border: #e5e5e5;
+  --input: #e5e5e5;
+  --ring: #a1a1a1;
+  --sidebar: #fafafa;
+  --sidebar-foreground: #0a0a0a;
+  --sidebar-primary: #171717;
+  --sidebar-primary-foreground: #fafafa;
+  --sidebar-accent: #f5f5f5;
+  --sidebar-accent-foreground: #171717;
+  --sidebar-border: #e5e5e5;
+  --sidebar-ring: #a1a1a1;
+  --left-sidebar: #f5f5f5;
+  --left-sidebar-foreground: #0a0a0a;
+  --left-sidebar-accent: #eaeaea;
+  --left-sidebar-accent-foreground: #171717;
+  --left-sidebar-border: #e5e5e5;
+  --split-divider: #868690;
+  --split-divider-strong: #71717a;
+}
+
+.dark {
+  --background: #0a0a0a;
+  --foreground: #fafafa;
+  --card: #171717;
+  --card-foreground: #fafafa;
+  --popover: #171717;
+  --popover-foreground: #fafafa;
+  --primary: #e5e5e5;
+  --primary-foreground: #171717;
+  --secondary: #262626;
+  --secondary-foreground: #fafafa;
+  --muted: #262626;
+  --muted-foreground: #a1a1a1;
+  --accent: #404040;
+  --accent-foreground: #fafafa;
+  --destructive: #ff6568;
+  --destructive-foreground: #df2225;
+  --border: rgb(255 255 255 / 0.07);
+  --input: rgb(255 255 255 / 0.15);
+  --ring: #737373;
+  --sidebar: #171717;
+  --sidebar-foreground: #fafafa;
+  --sidebar-primary: #1447e6;
+  --sidebar-primary-foreground: #fafafa;
+  --sidebar-accent: #262626;
+  --sidebar-accent-foreground: #fafafa;
+  --sidebar-border: rgb(255 255 255 / 0.07);
+  --sidebar-ring: #525252;
+  --left-sidebar: #2a2a2a;
+  --left-sidebar-foreground: #fafafa;
+  --left-sidebar-accent: #353535;
+  --left-sidebar-accent-foreground: #fafafa;
+  --left-sidebar-border: rgb(255 255 255 / 0.07);
+  --split-divider: #71717a;
+  --split-divider-strong: #a1a1aa;
+}
+
+@layer base {
+  * { @apply border-border outline-ring/50; }
+  html, body, #root { height: 100dvh; }
+  body { @apply bg-background text-foreground; overflow: hidden; letter-spacing: 0.01em; -webkit-font-smoothing: antialiased; font-family: var(--app-font-family); }
+}
+
+/* Radix 포털은 문서 루트에 그려져 드래그 영역과 겹치면 클릭이 안 된다 → 전부 no-drag */
+[data-radix-popper-content-wrapper],
+[data-slot='dialog-overlay'],
+[data-slot='dialog-content'] { -webkit-app-region: no-drag; }
+
+.titlebar {
+  height: 36px; min-height: 36px;
+  display: flex; flex-direction: row; align-items: center;
+  background: var(--bg-titlebar, var(--card));
+  border-bottom: 1px solid var(--border);
+  -webkit-app-region: drag; user-select: none;
+}
+/* 사이드바 위 36px 띠. border 대신 inset shadow로 구분선을 그려 컨트롤이 신호등 중심(y=18)과 같은 높이에 온다 */
+.titlebar-left {
+  height: 36px; min-height: 36px;
+  display: flex; flex-direction: row; align-items: center;
+  overflow: hidden; flex-shrink: 0;
+  background: var(--left-sidebar);
+  box-shadow: inset 0 -1px 0 var(--border);
+  -webkit-app-region: drag; user-select: none;
+}
+.titlebar-left-floating { background: var(--bg-titlebar, var(--card)); }
+.titlebar-traffic-light-pad { width: 80px; flex-shrink: 0; }
+.titlebar button, .titlebar-left button, .titlebar [role='tab'] { -webkit-app-region: no-drag; }
+
+.window-controls { position: fixed; top: 0; right: 0; z-index: 9999; display: flex; flex-direction: row; height: 36px; -webkit-app-region: no-drag; }
+.window-controls-btn { display: flex; align-items: center; justify-content: center; width: 46px; height: 36px; background: transparent; border: none; color: var(--muted-foreground); cursor: pointer; transition: background 100ms, color 100ms; }
+.window-controls-btn:hover { background: var(--accent); color: var(--foreground); }
+.window-controls-close:hover { background: #c42b1c; color: #fff; }
+.window-controls-titlebar-spacer { flex-shrink: 0; width: var(--window-controls-width, 0px); }
+
+/* 게스트 webview는 부모 flex 영역을 채운다 */
+webview { display: flex; flex: 1; min-height: 0; }
