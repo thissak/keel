@@ -22,7 +22,8 @@
   "files": [
     "dist",
     "styles",
-    "template"
+    "template",
+    "THIRD_PARTY_NOTICES.md"
   ],
   "scripts": {
     "build": "rm -rf dist && tsc -p tsconfig.json",

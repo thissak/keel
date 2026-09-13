@@ -22,6 +22,10 @@ NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FO
 DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT
 OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
-## Geist
+## Geist (Vercel)
 
-Geist — Vercel, SIL Open Font License 1.1
+Copyright (c) 2023 Vercel, Inc.
+
+Licensed under the SIL Open Font License, Version 1.1 — https://openfontlicense.org
+
+`styles/fonts/Geist-Variable.woff2`는 수정 없이 그대로 재배포한다.
