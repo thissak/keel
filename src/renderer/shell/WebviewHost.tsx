@@ -24,7 +24,11 @@ export function WebviewHost({ tab, active }: { tab: Tab; active: boolean }) {
     if (!el) return
     webviewRegistry.set(tab.id, el)
     const onTitle = (e: Event & { title?: string }) => update(tab.id, { title: titleFor(el.getURL(), e.title ?? '') })
-    const onNav = (e: Event & { url?: string }) => update(tab.id, { url: e.url ?? el.getURL(), title: titleFor(e.url ?? el.getURL(), el.getTitle()) })
+    // iframe(예: 뷰어) 탐색이 탭 URL을 덮어쓰지 않도록 최상위 프레임만 저장한다
+    const onNav = (e: Event & { url?: string; isMainFrame?: boolean }) => {
+      if (e.isMainFrame === false) return
+      update(tab.id, { url: e.url ?? el.getURL(), title: titleFor(e.url ?? el.getURL(), el.getTitle()) })
+    }
     el.addEventListener('page-title-updated', onTitle)
     el.addEventListener('did-navigate', onNav)
     el.addEventListener('did-navigate-in-page', onNav)
