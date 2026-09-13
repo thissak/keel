@@ -21,8 +21,10 @@ export function KeelShell({ sidebar, activities, panels = {}, layout, tabMenu, o
   const [ready, setReady] = useState(false)
   const apiRef = useRef<KeelApi | null>(null)
   useEffect(() => {
+    let cancelled = false
     let stop = () => {}
     void hydrateFromMain().then(() => {
+      if (cancelled) return
       stop = startPersistence()
       apiRef.current = createKeelApi()
       const restored = Object.keys(useTabsStore.getState().state.tabs).length > 0
@@ -30,10 +32,11 @@ export function KeelShell({ sidebar, activities, panels = {}, layout, tabMenu, o
       onReady?.(apiRef.current, restored)
     })
     const offGuest = window.keel.guest.onOpenRequest(url => apiRef.current?.openWeb({ url }))
-    return () => { stop(); offGuest() }
+    return () => { cancelled = true; stop(); offGuest() }
   }, [])
   const tabs = useTabsStore(s => s.state)
   const current = activeTab(tabs)
+  // 렌더 중 레지스트리를 읽지만 did-navigate가 store.update()를 부르므로 그때 재렌더되어 back/forward 상태가 갱신된다
   const wv = current?.kind === 'web' ? webviewRegistry.get(current.id) : undefined
   if (!ready) return null
   const canBack = typeof wv?.canGoBack === 'function' && wv.canGoBack()
