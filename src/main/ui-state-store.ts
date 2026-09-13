@@ -35,6 +35,7 @@ export class UiStateStore {
   private state: PersistedUiState = structuredClone(DEFAULT_UI_STATE)
   private timer: NodeJS.Timeout | null = null
   private pending: Promise<void> = Promise.resolve()
+  private dirty = false
   private readonly debounceMs: number
 
   constructor(private readonly filePath: string, opts: { debounceMs?: number } = {}) {
@@ -54,19 +55,31 @@ export class UiStateStore {
 
   patch(p: Partial<PersistedUiState>): void {
     this.state = { ...this.state, ...p, version: 1 }
+    this.dirty = true
     if (this.timer) clearTimeout(this.timer)
-    this.timer = setTimeout(() => { this.timer = null; this.pending = this.pending.then(() => this.write()) }, this.debounceMs)
+    this.timer = setTimeout(() => { this.timer = null; this.schedule() }, this.debounceMs)
+  }
+
+  private schedule(): void {
+    this.pending = this.pending.then(() => this.write()).catch(() => {})
   }
 
   async flush(): Promise<void> {
-    if (this.timer) { clearTimeout(this.timer); this.timer = null; this.pending = this.pending.then(() => this.write()) }
+    if (this.timer) { clearTimeout(this.timer); this.timer = null; this.schedule() }
     await this.pending
+    // 마지막 쓰기가 실패했으면 여기서 한 번 더 시도하고 실패를 호출자에게 알린다
+    if (this.dirty) await this.writeOnce()
   }
 
   private async write(): Promise<void> {
+    try { await this.writeOnce() } catch (err) { console.warn('keel: ui 상태 저장 실패, 다음 변경 때 재시도', err) }
+  }
+
+  private async writeOnce(): Promise<void> {
     await mkdir(dirname(this.filePath), { recursive: true })
     const tmp = `${this.filePath}.${process.pid}.tmp`
     await writeFile(tmp, JSON.stringify(this.state, null, 2))
     await rename(tmp, this.filePath)
+    this.dirty = false
   }
 }
