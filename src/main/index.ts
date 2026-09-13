@@ -1,4 +1,4 @@
-import { app, session, type Session, type WebContents } from 'electron'
+import { app, Menu, session, type Session, type WebContents } from 'electron'
 import { createRequire } from 'node:module'
 import { join } from 'node:path'
 import { validateAppConfig, type KeelAppConfig } from '../shared/config.js'
@@ -27,6 +27,15 @@ export async function createKeelApp(input: KeelAppConfig): Promise<KeelApp> {
   app.setName(config.name)
   app.setPath('userData', config.userData ?? join(app.getPath('appData'), config.id))
   await app.whenReady()
+
+  // 기본 메뉴의 File→Close(Cmd+W)가 웹 탭 포커스 상태에서 창을 닫아 버리므로 close 없는 메뉴를 직접 둔다.
+  // editMenu는 macOS에서 Cmd+C/V가 동작하려면 반드시 있어야 한다.
+  Menu.setApplicationMenu(Menu.buildFromTemplate([
+    ...(process.platform === 'darwin' ? [{ role: 'appMenu' as const }] : []),
+    { role: 'editMenu' as const },
+    { role: 'viewMenu' as const },
+    { role: 'windowMenu' as const }
+  ]))
 
   const webSession = session.fromPartition(WEB_PARTITION(config.id))
   webSession.setPermissionRequestHandler((contents, permission, callback, details) =>

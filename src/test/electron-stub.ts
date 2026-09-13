@@ -7,3 +7,4 @@ export const session = { fromPartition: () => ({}) }
 export const ipcMain = { handle: () => {}, on: () => {} }
 export const shell = { openExternal: async () => {} }
 export const net = { fetch: async () => new Response('') }
+export const Menu = { setApplicationMenu: () => {}, buildFromTemplate: (t: unknown) => t }
