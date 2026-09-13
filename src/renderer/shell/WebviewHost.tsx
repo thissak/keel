@@ -1,12 +1,19 @@
 import { useEffect, useRef } from 'react'
 import type { Tab } from '../../shared/tab-model.js'
 import { useTabsStore } from '../store/tabs.js'
-import { titleFor } from './webview-events.js'
+import { isWebviewDetachNoise, titleFor } from './webview-events.js'
 
 type WebviewEl = HTMLElement & { src: string; goBack(): void; goForward(): void; canGoBack(): boolean; canGoForward(): boolean; getURL(): string; getTitle(): string }
 export type WebviewHandle = Pick<WebviewEl, 'goBack' | 'goForward' | 'canGoBack' | 'canGoForward'>
 
 export const webviewRegistry = new Map<string, WebviewEl>()
+
+/** webview 제거 시 Electron이 보고하는 detach 소음을 셸 콘솔·pageerror에서 걸러낸다. 반환값으로 해제한다. */
+export function suppressWebviewDetachNoise(): () => void {
+  const onError = (e: ErrorEvent) => { if (isWebviewDetachNoise(e.message)) e.preventDefault() }
+  window.addEventListener('error', onError)
+  return () => window.removeEventListener('error', onError)
+}
 
 export function WebviewHost({ tab, active }: { tab: Tab; active: boolean }) {
   const ref = useRef<WebviewEl>(null)

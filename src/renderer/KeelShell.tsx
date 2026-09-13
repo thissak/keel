@@ -3,7 +3,7 @@ import { KeelProvider, createKeelApi, type KeelApi } from './keel-context.js'
 import { KeelShellLayout } from './shell/KeelShell.js'
 import type { Activity } from './shell/RightPanel.js'
 import { GroupContent, type PanelRegistry } from './shell/TabContent.js'
-import { webviewRegistry } from './shell/WebviewHost.js'
+import { suppressWebviewDetachNoise, webviewRegistry } from './shell/WebviewHost.js'
 import { hydrateFromMain, startPersistence } from './store/persist.js'
 import { useTabsStore } from './store/tabs.js'
 import { activeTab } from '../shared/tab-model.js'
@@ -32,7 +32,8 @@ export function KeelShell({ sidebar, activities, panels = {}, layout, tabMenu, o
       onReady?.(apiRef.current, restored)
     })
     const offGuest = window.keel.guest.onOpenRequest(url => apiRef.current?.openWeb({ url }))
-    return () => { cancelled = true; stop(); offGuest() }
+    const offNoise = suppressWebviewDetachNoise()
+    return () => { cancelled = true; stop(); offGuest(); offNoise() }
   }, [])
   const tabs = useTabsStore(s => s.state)
   const current = activeTab(tabs)
