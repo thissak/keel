@@ -1,1 +1,11 @@
-export const KEEL_RENDERER = true
+export { KeelShell, type KeelShellProps } from './KeelShell.js'
+export { useKeel, type KeelApi } from './keel-context.js'
+export type { Activity } from './shell/RightPanel.js'
+export type { PanelProps, PanelRegistry } from './shell/TabContent.js'
+export type { Tab, LayoutNode, SplitDirection } from '../shared/tab-model.js'
+export type { FetchAsAppResponse } from '../shared/ipc.js'
+export { Button } from './components/ui/button.js'
+export { ScrollArea } from './components/ui/scroll-area.js'
+export { Input } from './components/ui/input.js'
+export { Separator } from './components/ui/separator.js'
+export { cn } from './lib/utils.js'
