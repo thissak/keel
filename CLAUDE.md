@@ -27,6 +27,12 @@
 
 ## 검증 명령
 
-`experiments/app-base-comparison/`에서 의존성 설치 후 `npm --prefix orca run build`,
-`npm --prefix theia run build`, `npm test`를 실행한다. 비교 예제용 명령이며 제품 배포 명령이 아니다.
-설치와 macOS 개발용 서명 보정은 해당 디렉터리의 `README.md`를 따른다.
+저장소 루트에서 `pnpm install` 후:
+
+- `pnpm build` — 코어 패키지를 `dist/`에 빌드한다.
+- `pnpm test` — vitest (빌드를 선행한다).
+- `pnpm example:build && pnpm example:test` — `examples/sample-app`의 Electron 스모크. 창이 잠깐
+  떴다 닫히며 외부 브라우저는 열지 않는다.
+
+`experiments/app-base-comparison/`의 비교 예제 명령(`npm --prefix orca run build` 등)은 별도이며
+제품 배포 명령이 아니다. 설치와 macOS 개발용 서명 보정은 해당 디렉터리의 `README.md`를 따른다.

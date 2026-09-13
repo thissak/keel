@@ -1,0 +1,31 @@
+# Third-party notices
+
+## Orca (stablyai/orca)
+
+Portions of the shell (design tokens, titlebar CSS, sidebar resize hook, tab model shape,
+window options) are adapted from Orca, https://github.com/stablyai/orca, commit cf7ce058.
+
+MIT License — Copyright (c) 2026 Lovecast Inc.
+
+Permission is hereby granted, free of charge, to any person obtaining a copy of this software and
+associated documentation files (the "Software"), to deal in the Software without restriction,
+including without limitation the rights to use, copy, modify, merge, publish, distribute,
+sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all copies or
+substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT
+NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
+NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM,
+DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT
+OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+
+## Geist (Vercel)
+
+Copyright (c) 2023 Vercel, Inc.
+
+Licensed under the SIL Open Font License, Version 1.1 — https://openfontlicense.org
+
+`styles/fonts/Geist-Variable.woff2`는 수정 없이 그대로 재배포한다.

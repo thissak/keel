@@ -19,3 +19,6 @@ experiments/app-base-comparison/theia/note-extension/src/notes.json
 experiments/app-base-comparison/evidence/*-failure.png
 experiments/app-base-comparison/theia/.browser_modules/
 experiments/app-base-comparison/theia/.electron_modules/
+examples/*/out/
+examples/*/release/
+release/
