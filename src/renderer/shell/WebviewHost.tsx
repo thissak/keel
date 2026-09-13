@@ -1,4 +1,4 @@
-import { createElement, useEffect, useRef } from 'react'
+import { createElement, useEffect, useRef, useState } from 'react'
 import type { Tab } from '../../shared/tab-model.js'
 import { useTabsStore } from '../store/tabs.js'
 import { isWebviewDetachNoise, titleFor } from './webview-events.js'
@@ -18,6 +18,7 @@ export function suppressWebviewDetachNoise(): () => void {
 export function WebviewHost({ tab, active }: { tab: Tab; active: boolean }) {
   const ref = useRef<WebviewEl>(null)
   const update = useTabsStore(s => s.update)
+  const [initialUrl] = useState(tab.url)
   useEffect(() => {
     const el = ref.current
     if (!el) return
@@ -40,7 +41,7 @@ export function WebviewHost({ tab, active }: { tab: Tab; active: boolean }) {
   // boolean으로만 선언하고 인터페이스 병합으로는 넓힐 수 없어, 캐스트 대신 props 타입을 추론하는 createElement로 만든다.
   return (
     <div className="flex min-h-0 flex-1" style={{ display: active ? 'flex' : 'none' }}>
-      {createElement('webview', { ref, 'data-tab-id': tab.id, partition: `persist:${window.keel.app.id}`, src: tab.url, allowpopups: '' })}
+      {createElement('webview', { ref, 'data-tab-id': tab.id, partition: `persist:${window.keel.app.id}`, src: initialUrl, allowpopups: '' })}
     </div>
   )
 }
